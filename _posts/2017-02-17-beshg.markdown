@@ -15,5 +15,5 @@ BWA-mem was slightly faster than Bowtie2 and produced on average higher mapping 
 The combination of BWA-mem and elPrep to prepare the bam files performed best for this application. When speed is important, GATK is the prefered variant caller. However, when choosing a variant caller for a particular application it is important to evaluate the analytical performance for different filtering criteria (not only depth) and take into account the trade-off between reportable range, specificity and sensitivity. 
 
 
-[poster]({{ site.url }}/assets/beshg2017.png)
+![poster]({{ site.url }}/assets/beshg2017.png)
 
