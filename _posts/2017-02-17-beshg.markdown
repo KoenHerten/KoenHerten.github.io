@@ -1,0 +1,19 @@
+---
+layout: post
+title:  "BeSHG Abstract and Poster"
+date:   2017-02-17 08:00:00 +0100
+categories: discussion
+---
+
+# Analytical and computational performance of variant calling pipelines for targeted NGS gene panels 
+
+## Koen Herten, Erika Souche, Luc Dehaspe, Joris R Vermeesch, Jeroen KJ Van Houdt
+
+The simultaneous analysis of a large set of genes by targeted NGS has become an important tool in clinical diagnostics. Implementation and validation of these novel technologies in a clinical setting requires a good understanding of their analytical performance. This performance is determined by the chosen wetlab protocols and the applied bioinformatic pipeline. We evaluated the performance of different bioinformatic pipelines on data that were generated for two well characterized cell lines (Illumina Platinum Genomes, NA12877 and NA12878).
+The exonic regions of 5,811 genes (UZL Mendeliome) were sequenced with an average coverage of 171x and 144x for NA12877 and NA12878, respectively (Illumina HiSeq2500 PE 126 bp). Both datasets were analysed with multiple pipelines combining several mapping, bam-post processing and variant calling tools. The pipelines were run on the same computing infrastructure (Ivy Bridge Xeon E5-2680v2 CPU (2x10 cores), 128GB RAM). If possible, the tools were ran multithreaded or in parallel. The analytical performance was assessed by comparing the variant calls to the platinum genotypes. All pipelines produced calls (variant and reference) for every position in the target (16.35Mb). These call sets were filtered using different criteria and compared to the platinum calls. 
+BWA-mem was slightly faster than Bowtie2 and produced on average higher mapping quality scores. The call sets based on BWA-mem mapping showed higher congruence with the platinum calls than the call sets based on Bowtie2 mapping. Varying the bam-post processing tools (sorting and duplicate marking) had a minor impact and resulted in almost identical call sets, but elPrep was substantially faster. The choice of variant caller (GATK and FreeBayes) had a strong impact on the resulting call sets and speed performance. GATK was four times faster than FreeBayes and twice as fast when base-recalibration was included. The analytical performance of the variant caller depends on the criteria used for deciding whether a call is reliable/included or not. These criteria determine the reportable range of your experiment, i.e. the fraction of target positions where a call is made. An optimal filter setting will maximize the reportable range, specificity and sensitivity. Since depth of coverage is often used for identifying reliable positions and as such  for determining the reportable range, it was used to compare the performance of both callers. Unlike other potential filter parameters, depth is independent of the variant caller. The analytical performance of both callers was similar but we observed that tool specific misclassified calls tended to cluster together, suggesting that sequencing context is important and affects the performance of both variant callers differently. 
+The combination of BWA-mem and elPrep to prepare the bam files performed best for this application. When speed is important, GATK is the prefered variant caller. However, when choosing a variant caller for a particular application it is important to evaluate the analytical performance for different filtering criteria (not only depth) and take into account the trade-off between reportable range, specificity and sensitivity. 
+
+
+[poster]({{ site.url }}/assets/beshg2017.png)
+

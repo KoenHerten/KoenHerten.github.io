@@ -9,7 +9,7 @@ Since my "developmental phase" on the [VSC](https://www.vscentrum.be/) is slowly
 * [worker framework](https://github.com/gjbex/worker)
   * This framework is specially developed by the people @ the VSC
   * PRO: 
-    *You do not need to take care of anything special, simply create the PBS script, use a variable like SAMPLE for the samplename, and have a file list, with as header SAMPLE and each line the name of a sample
+    * You do not need to take care of anything special, simply create the PBS script, use a variable like SAMPLE for the samplename, and have a file list, with as header SAMPLE and each line the name of a sample
   * CON: 
     * I experienced a lot of troubles when the list goes over 60. 
     * There is a threaded option, but does not always act like discribed. Sometimes when I ensure that each job runs on a node (20 cores, so 20 threads supplied). I end up with nodes running multiple jobs, and empty nodes. 
