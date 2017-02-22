@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "VSC launching batch jobs"
-date:   2017-02-22 15:00:00 +0100
+date:   2017-02-22 14:50:00 +0100
 categories: discussion
 ---
 
