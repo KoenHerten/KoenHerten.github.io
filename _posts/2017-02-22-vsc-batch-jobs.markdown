@@ -50,8 +50,7 @@ CORES=`nproc`
 cat commands.txt | parallel -j $CORES 'sh {} > {}.log 2> {}.err'
 ```
      On multiple nodes:
-
-     ```bash
+```bash
 #example for multiple nodes, 1 task per node (can be changed to multiple tasks by changing the -j option like above)
 #get the list of nodes reserved by this job (each node should only be mentioned once):
 cat $PBS_NODEFILE | sort | uniq > nodefile
