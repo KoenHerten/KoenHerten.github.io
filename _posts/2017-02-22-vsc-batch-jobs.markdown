@@ -40,6 +40,7 @@ qsub -t 1:20%10 job.pbs
     * not limited to changing only a few variables (worker), or 1 arrayindex (atools, regular batch system). Since multiple different sh scripts could be launched
   * CON: 
     * need some "advanced" knowledge of bash programming for usage over multiple nodes
+      On 1 node:
 ```bash
 #example for on 1 node:
 #get the number of cores in this node (optimization)
@@ -48,6 +49,8 @@ CORES=`nproc`
 #{} will be the path of the sh file, the sh file will be executed, and a log and error file will be created
 cat commands.txt | parallel -j $CORES 'sh {} > {}.log 2> {}.err'
 ```
+     On multiple nodes:
+
 ```bash
 #example for multiple nodes, 1 task per node (can be changed to multiple tasks by changing the -j option like above)
 #get the list of nodes reserved by this job (each node should only be mentioned once):
