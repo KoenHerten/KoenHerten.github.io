@@ -5,7 +5,7 @@ date:   2017-03-08 13:50:00 +0100
 categories: walkthrough
 ---
 
-#Environment Modules
+## Environment Modules
 
 The Environment Modules package provides for the dynamic modification of a user’s environment via modulefiles.
 
@@ -13,7 +13,7 @@ Each modulefile contains the information needed to configure the shell for an ap
 
 Modules can be loaded and unloaded dynamically and atomically, in an clean fashion. Modules are useful in managing different versions of applications. Modules can also be bundled into metamodules that will load an entire suite of different applications.
 
-#Setup on Ubuntu
+## Setup on Ubuntu
 
 First install some dependencies:
 ```bash
@@ -62,7 +62,7 @@ As a last edit, you will need to add the module to your bashrc script. This will
 /usr/local/Modules/default/bin/add.modules
 ```
 
-#Installing applications in the module
+## Installing applications in the module
 
 Installing applications from scratch will become easy and trivial:
 Example: installing gcc 4.6.2.
@@ -82,7 +82,7 @@ make install
 Now the gcc tool is installed. A module file is needed to be able to load this tool as a module.
 Note: for tools that are not build like this, you can create bash scripts, and store these in the bin file. All scripts/software available in the bin file will be loaded by the module.
 
-#Creating module files
+## Creating module files
 
 First create a directory for the installed tool (only toolname):
 ```bash
@@ -117,7 +117,7 @@ setenv F90 gfortran
 ```
 You can also use this script to generate module files: https://github.com/GenomicsCoreLeuven/vsc_ngs_workshop/blob/master/advanced/generate_modulefile
 
-#Using modules:
+## Using modules:
 
 Using modules is not that hard. There are only a few commands to remember:
 
