@@ -51,6 +51,17 @@ Make sure the module software can be loaded when the shell is loaded:
 cp etc/global/profile.modules /etc/profile.d/modules.sh
 ```
 
+In your installation directory you will need to link the installed modules version as a default:
+```bash
+cd /usr/local/Modules
+ln -sfn 3.2.9 default
+```
+
+As a last edit, you will need to add the module to your bashrc script. This will have to be done for every user, just execute this command:
+```bash
+/usr/local/Modules/default/bin/add.modules
+```
+
 #Installing applications in the module
 
 Installing applications from scratch will become easy and trivial:
