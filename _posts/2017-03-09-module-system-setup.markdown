@@ -62,6 +62,13 @@ As a last edit, you will need to add the module to your bashrc script. This will
 /usr/local/Modules/default/bin/add.modules
 ```
 
+For easy use, you can add tab-completion for the commands (like module load). The easiest way to enable this is:
+```bash
+cd
+cat /usr/local/Modules/default/init/bash_completion >> .bashrc
+```
+
+
 ## Installing applications in the module
 
 Installing applications from scratch will become easy and trivial:
