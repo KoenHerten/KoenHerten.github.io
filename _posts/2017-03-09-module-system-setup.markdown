@@ -64,8 +64,10 @@ As a last edit, you will need to add the module to your bashrc script. This will
 
 For easy use, you can add tab-completion for the commands (like module load). The easiest way to enable this is:
 ```bash
-cd
-cat /usr/local/Modules/default/init/bash_completion >> .bashrc
+cd 
+echo "" >> .bashrc
+echo "" >> .bashrc
+echo "source /usr/local/Modules/default/init/bash_completion" >> .bashrc
 ```
 
 
