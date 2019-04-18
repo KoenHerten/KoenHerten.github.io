@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "BeSHG Abstract and Poster"
+title:  "VSC User Day 2018 Poster"
 date:   2018-05-22 08:00:00 +0100
 categories: discussion
 ---
