@@ -1,0 +1,105 @@
+#!/bin/bash -l
+#PBS -l walltime=02:00:00:00
+#PBS -l mem=120gb
+#PBS -l nodes=1:ppn=20
+#PBS -M koen.herten@kuleuven.be
+#PBS -m aeb
+#PBS -N qiime2
+#PBS -A lp_biogenomics
+##[VERSION] pikaDEV 
+##[HELP] This tool run the qiime2 pipeline
+##
+##[HOWTO] #metagenomics qiime2
+##[HOWTO] #start the module:
+##[HOWTO] pikasub qiime2.pbs
+##
+##[HELP] Options:
+##[HELP] genome: the genome to use (abriviation if known or full path)
+##[OPTIONS] genome      mandatory       sed 's:GENOME_DIR=\"\":GENOME_DIR=\"value\":g'
+
+
+#loading the modules
+source switch_to_2015a; module use /staging/leuven/stg_00019/software/modulefiles;
+module load qiime/2
+
+#setting all parameters (these could be changed)
+PROJECT_DIR="/staging/leuven/stg_00019/metagenomics/microNet";
+GENOME_DIR="/staging/leuven/stg_00019/genome/qiime2_classifiers/greengenes13_8/";
+SAMPLE_DIR="$PROJECT_DIR/raw";
+OUTPUT_DIR="$PROJECT_DIR/qiime2";
+SCRATCH_DIR="$PROJECT_DIR/tmp";
+THREADS=`nproc`;
+TRIM_LEFT="0";
+TRUNC_LENGTH="100";
+CLASSIFIER="$GENOME_DIR/classifier.qza";
+
+#the actual script
+JOBID=$PBS_JOBID;
+mkdir -p $SCRATCH_DIR/$JOBID;
+TMPDIR=$SCRATCH_DIR/$JOBID;
+TMP_DIR=`mktemp -d -t tmp.XXXXXXXX`;
+cd $TMP_DIR;
+
+mkdir -p $TMP_DIR/raw
+rsync -ahrL $SAMPLE_DIR/* $TMP_DIR/raw/;
+
+cd $TMP_DIR/raw
+count=0
+for i in `ls -1 *.R1.fastq.gz`;
+do
+	count=$((count + 1))
+	j=`echo $i | sed 's:.R1.fastq.gz:_'"$count"'_L001_R1_001.fastq.gz:g'`
+	mv $i $j
+done
+count=0
+for i in `ls -1 *.R2.fastq.gz`;
+do
+	count=$((count + 1))
+        j=`echo $i | sed 's:.R2.fastq.gz:_'"$count"'_L001_R2_001.fastq.gz:g'`
+        mv $i $j
+done
+cd $TMP_DIR
+
+#import
+#qiime tools import --type RawSequences --input-path raw-sequences --output-path raw-sequences.qza
+
+#demultiplex
+#qiime demux emp --i-seqs raw-sequences.qza --m-barcodes-file sample-metadata.tsv --m-barcodes-category BarcodeSequence --o-per-sample-sequences demux
+
+#illumina PE demultiplexed
+qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' --input-path raw --source-format CasavaOneEightSingleLanePerSampleDirFmt --output-path demux.qza
+
+#QC
+qiime dada2 plot-qualities --i-demultiplexed-seqs demux.qza --p-n 10 --o-visualization demux-qual-plots
+
+qiime dada2 denoise --i-demultiplexed-seqs demux.qza --p-trim-left $TRIM_LEFT --p-trunc-len $TRUNC_LENGTH --o-representative-sequences rep-seqs --o-table table
+
+qiime feature-table summarize --i-table table.qza --o-visualization table
+qiime feature-table tabulate-seqs --i-data rep-seqs.qza --o-visualization rep-seqs
+
+
+#Generate a tree for phylogenetic diversity analyses
+qiime alignment mafft --i-sequences rep-seqs.qza --o-alignment aligned-rep-seqs
+
+qiime alignment mask --i-alignment aligned-rep-seqs.qza --o-masked-alignment masked-aligned-rep-seqs
+
+qiime phylogeny fasttree --i-alignment masked-aligned-rep-seqs.qza --o-tree unrooted-tree
+
+qiime phylogeny midpoint-root --i-tree unrooted-tree.qza --o-rooted-tree rooted-tree
+
+#Taxonomic analysis
+
+qiime feature-classifier classify --i-classifier $CLASSIFIER --i-reads rep-seqs.qza --o-classification taxonomy
+
+qiime taxa tabulate --i-data taxonomy.qza --o-visualization taxonomy
+
+qiime taxa barplot --i-table table.qza --i-taxonomy taxonomy.qza --m-metadata-file sample-metadata.tsv --o-visualization taxa-bar-plots
+
+
+mkdir -p $OUTPUT_DIR;
+#rm -r $TMP_DIR/raw;
+cd $OUTPUT_DIR;
+rsync -ahr $TMP_DIR/* .;
+#rm -rf $TMP_DIR;
+
+
